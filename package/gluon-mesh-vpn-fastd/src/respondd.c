@@ -239,7 +239,7 @@ static bool get_peer_connection(struct json_object **ret, struct json_object *co
 	if (!key)
 		return false;
 
-	struct json_object *peer, *connection, *established;
+	struct json_object *peer, *connection, *established, *method;
 	if (!json_object_object_get_ex(peers, key, &peer) ||
 	    !json_object_object_get_ex(peer, "connection", &connection))
 		return false;
@@ -251,6 +251,11 @@ static bool get_peer_connection(struct json_object **ret, struct json_object *co
 		struct json_object *jso = json_object_new_double(established_time/1000.0);
 		json_object_set_serializer(jso, json_object_double_to_json_string, "%.3f", NULL);
 		json_object_object_add(*ret, "established", jso);
+
+		if (json_object_object_get_ex(connection, "method", &method)) {
+			const char* method_value = json_object_get_string(method);
+			json_object_object_add(*ret, "method", method_value);
+		}
 	}
 	else {
 		*ret = NULL;
