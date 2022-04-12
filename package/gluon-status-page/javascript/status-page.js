@@ -207,7 +207,8 @@
 
 			var td = document.createElement('td');
 			if (peer[1])
-				td.textContent = _['connected'] + ' (' + formats.time(peer[1].established) + ')';
+				var method = peer[1].method ? ', ' + peer[1].method : '';
+				td.textContent = _['connected'] + ' (' + formats.time(peer[1].established) + method + ')';
 			else
 				td.textContent = _['not connected'];
 			tr.appendChild(td);
